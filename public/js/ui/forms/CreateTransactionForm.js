@@ -8,7 +8,8 @@ class CreateTransactionForm extends AsyncForm {
    * метод renderAccountsList
    * */
   constructor(element) {
-    super(element)
+    super(element);
+    this.renderAccountsList();
   }
 
   /**
@@ -16,6 +17,30 @@ class CreateTransactionForm extends AsyncForm {
    * Обновляет в форме всплывающего окна выпадающий список
    * */
   renderAccountsList() {
+    function callback(err, response) {
+
+      function addOption (selectAccount) {
+        let accounts = response.data;
+        for (let i in accounts) {
+          const option = document.createElement('option');
+          option.value = accounts[i].id;
+          option.text = accounts[i].name;
+          selectAccount.add(option);
+        }
+        
+      }
+
+      // console.log(selectAccount);
+      const selectAccountExpense = document.getElementById('expense-accounts-list');
+      const selectAccountIncome = document.getElementById('income-accounts-list');
+
+      addOption(selectAccountExpense);
+      addOption(selectAccountIncome);
+      
+      
+    }
+    let data = User.current();
+    Account.list(data, callback);
 
   }
 
@@ -27,5 +52,45 @@ class CreateTransactionForm extends AsyncForm {
    * */
   onSubmit(data) {
 
+    console.log(data)
+
+    // Transaction.create(data, callback);
+
+    // const openWin = [...document.querySelectorAll('.modal')];
+  
+    // for (let i in openWin) {
+    //   if (openWin[i].style.display === 'block') {
+    //     openWin[i].style.display = 'none';
+    //     openWin[i].querySelector('.form').reset();
+    //   }
+    // }
+
+    // s
+
+    
+    function callback (err, response) {
+
+      if (response.success) {
+
+        console.log(response);
+
+        const openWin = [...document.querySelectorAll('.modal')];
+  
+        for (let i in openWin) {
+          if (openWin[i].style.display === 'block') {
+            openWin[i].style.display = 'none';
+            openWin[i].querySelector('.form').reset();
+          }
+        }
+        // Transaction.create(data, callback, '/transaction');
+        App.update();
+      
+      } else {
+        alert(response.error);
+      }
+
+    }
+
+    // Transaction.create(data, callback);
   }
 }

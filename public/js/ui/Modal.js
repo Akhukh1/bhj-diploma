@@ -56,7 +56,6 @@ class Modal {
   open() {
     this.element.style.display = 'block';
     const openWin = new AsyncForm(this.element);
-
   }
   /**
    * Закрывает окно: удаляет CSS-свойство display

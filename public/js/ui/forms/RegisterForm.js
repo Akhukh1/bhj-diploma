@@ -14,11 +14,47 @@ class RegisterForm extends AsyncForm {
     // const dataArr = Object.entries(data);
     // console.log(dataArr);
 
-    User.register(data, (err, response) => {
-    
-    })
+    function callback (err, response) {
 
-    this.element.style.display = 'none';
+      if (response.success) {
+
+        User.setCurrent(response.user);
+
+        App.setState('user-logged'); 
+        const openWin = [...document.querySelectorAll('.modal')];
+
+        for (let i in openWin) {
+          if (openWin[i].style.display === 'block') {
+            openWin[i].style.display = 'none';
+            openWin[i].querySelector('.form').reset();
+          }
+        }
+        
+        App.widgets.user.update();
+
+        // if (localStorage.getItem('id')) {
+
+        //   App.setState('user-logged'); 
+        //   const openWin = [...document.querySelectorAll('.modal')];
+  
+        //   for (let i in openWin) {
+        //     if (openWin[i].style.display === 'block') {
+        //       openWin[i].style.display = 'none';
+        //       openWin[i].querySelector('.form').reset();
+        //     }
+        //   }
+          
+        //   App.widgets.user.update();
     
+        // }
+
+      } else {
+        alert(response.error);
+      }
+
+    }
+
+    User.register(data, callback);
+
   }
 }

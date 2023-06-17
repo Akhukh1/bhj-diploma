@@ -46,8 +46,7 @@ class Sidebar {
 
     const menuItem = [...document.querySelectorAll('.menu-item')];
 
-    for (let i in menuItem) {
-      
+    for (let i in menuItem) {     
       menuItem[i].addEventListener('click', (e) => {
         e.preventDefault();
         if (menuItem[i].classList.contains('menu-item_login')) {
@@ -56,8 +55,13 @@ class Sidebar {
         } else if (menuItem[i].classList.contains('menu-item_register')) {
           let modal = new Modal('modal-register');
           modal.open();
-        } else {
-  
+        } else if (menuItem[i].classList.contains('menu-item_logout')) {
+          User.logout((err, response) => {
+            if (response.success) {
+              User.unsetCurrent();
+            }
+            
+          });
         }
       });
 

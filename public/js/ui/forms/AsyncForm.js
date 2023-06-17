@@ -26,35 +26,16 @@ class AsyncForm {
    * */
   registerEvents() {
     
-    const btnPrimary = this.element.querySelector('.btn-primary');
-    
+    // const btnPrimary = this.element.querySelector('.btn-primary');
 
-    if (btnPrimary) {
-      btnPrimary.addEventListener('click', (e) => {
+    const formReg = this.element.querySelector('.form');
+
+    if (formReg) {
+      formReg.addEventListener('submit', (e) => {
         e.preventDefault();
-        console.log(this.element);
-        this.submit();
-        
-        // console.log(this.element);
-        // console.log(btnPrimary);
-        
+        this.submit();     
       });
     }
-
-
-    // const form = this.element.querySelector('.form');
-    // // console.log(form);
-    // if (form) {
-    //   // const input = form.querySelectorAll('.form-control');
-    //   const input = [...form.querySelectorAll('.form-control')];
-    //   for(let i in input) {
-    //     input[i].addEventListener('input', () => {
-    //       // e.preventDefault();
-    //       console.log(input[i].value);
-    //     });
-    //   }
-
-    // }
 
   }
 
@@ -66,24 +47,17 @@ class AsyncForm {
    * }
    * */
   getData() {
-    console.log('привет');
-    const form = this.element.querySelector('.form');
-    // console.log(form);
-    if (form) {
 
-      const input = [...form.querySelectorAll('.form-control')];
-      let data = {};
+    const formReg = this.element.querySelector('.form');
+    let formData = new FormData(formReg);
+    let entries = formData.entries();
 
-      for(let i in input) {
-        data[input[i].name] = input[i].value;
-      }
-
-      // console.log(data);
-      return data;
-
+    let data = {};
+    for (let item of entries) {
+       data[item[ 0 ]] = item[ 1 ];
     }
 
-    // return data;
+    return data;
 
   }
 
@@ -96,14 +70,23 @@ class AsyncForm {
    * данные, полученные из метода getData()
    * */
   submit() {
+
     let data = this.getData();
-    // console.log(data);
-    if (data.name) {
-      console.log('регистрация');
+
+    if (this.element.id === 'modal-register') {
       const register = new RegisterForm(this.element);
       register.onSubmit(data);
-    } else {
-      console.log('вход');
+    } else if (this.element.id === 'modal-login') {
+      const logget = new LoginForm(this.element);
+      logget.onSubmit(data);
+    } else if (this.element.id === 'modal-new-account') {
+      const newAccount = new CreateAccountForm(this.element);
+      console.log('newAccount');
+      console.log(data);
+      newAccount.onSubmit(data);
+    } else if (this.element.id === 'modal-new-income') {
+      const newTransaction = new CreateTransactionForm(this.element);
+      newTransaction.onSubmit(data);
     }
   }
 }

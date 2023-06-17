@@ -11,7 +11,11 @@ class TransactionsPage {
    * через registerEvents()
    * */
   constructor( element ) {
-
+    if (!element) {
+      throw new Error('Значение element не задано')
+    }
+    this.element = element;
+    this.registerEvents();
   }
 
   /**
@@ -28,7 +32,10 @@ class TransactionsPage {
    * TransactionsPage.removeAccount соответственно
    * */
   registerEvents() {
-
+    const removeAccountBtn = document.querySelector('.remove-account');
+    removeAccountBtn.addEventListener('click', (e) => {
+      this.removeAccount()
+    })
   }
 
   /**
@@ -41,7 +48,7 @@ class TransactionsPage {
    * для обновления приложения
    * */
   removeAccount() {
-
+    Account.remove()
   }
 
   /**
@@ -61,7 +68,21 @@ class TransactionsPage {
    * в TransactionsPage.renderTransactions()
    * */
   render(options){
+    console.log('render');
+    console.log(this.element);
 
+    function callback(err, response) {
+      console.log(response);
+      // Transaction.list(response.account, call);
+      function call(response) {
+        console.log(response)
+      }
+    }
+
+    if (options) {
+      Account.get(options.id, callback);
+      
+    }
   }
 
   /**
